@@ -42,54 +42,20 @@ const attachSizesTofileTree = (fileTree) => {
   return total
 }
 
-const dirsLessThan = (fileTree, size) => {
-  let total = 0
-  if (fileTree.size <= size)
-    total += fileTree.size
-  for (let dir of Object.keys(fileTree)) {
-    if (dir === 'files' || dir === 'size')
-      continue
-    total += dirsLessThan(fileTree[dir], size)
-  }
-  return total
-}
-
 const getDirsWithGTSpace = (fileTree, space, dirName) => {
   const dirs = []
 
   if (fileTree.size >= space)
     dirs.push({size: fileTree.size, name: dirName})
 
-  //log(dirName, fileTree.size)
-
   for (let dir of Object.keys(fileTree)) {
     if (dir === 'files' || dir === 'size')
       continue
-
-    //if (fileTree[dir].size >= space)
-    //  dirs.push({size: fileTree[dir].size, name: dir})
 
     const subDirs = getDirsWithGTSpace(fileTree[dir], space, dir)
     dirs.push(...subDirs)
   }
   return dirs
-}
-
-const logFileStructure = (fileTree, path) => {
-  for (const dir of Object.keys(fileTree)) {
-    if (dir === 'files' || dir === 'size')
-      continue
-
-    const newPath = (path + '/' + dir).replace('//', '/')
-    log(newPath, fileTree[dir].size)
-  }
-  for (const dir of Object.keys(fileTree)) {
-    if (dir === 'files' || dir === 'size')
-      continue
-
-    const newPath = (path + '/' + dir).replace('//', '/')
-    logFileStructure(fileTree[dir], newPath)
-  }
 }
 
 const handleFile = (err, input) => {
