@@ -61,10 +61,9 @@ const handleFile = (err, input) => {
     }
   }
 
-  const invisibleCount = visabilityGrid.reduce((acc, val) => acc + val.reduce((a,b) => a + b), 0)
-  const gridCount = grid.length * grid.length
+  const visibleCount = visabilityGrid.flat().reduce((acc, val) => acc + val * (-1) + 1, 0)
 
-  log(gridCount - invisibleCount)
+  log(visibleCount)
 }
 
 fs.readFile('./input.txt', 'utf8', handleFile)
