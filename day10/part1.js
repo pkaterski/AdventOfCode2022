@@ -11,12 +11,9 @@ const handleFile = (err, input) => {
         return [[...acc, [cycle + 1, nextVal]], nextVal]
       } else { // addx
         const [_, addXStr] = val.split(' ')
-        const addX = +addXStr
-        return [[...acc, [cycle + 1, nextVal], [cycle + 2, nextVal]], nextVal + addX]
+        return [[...acc, [cycle + 1, nextVal], [cycle + 2, nextVal]], nextVal + +addXStr]
       }
-    },
-    [[[0, 1]], 1] // [[cycle, X], nextVal]
-  )
+    }, [[[0, 1]], 1]) // [[cycle, X], nextVal]
 
   const signalStrengths = []
   for (let i = 0; i < 6; i++) {

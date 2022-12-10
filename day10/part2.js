@@ -11,31 +11,24 @@ const handleFile = (err, input) => {
         return [[...acc, [cycle + 1, nextVal]], nextVal]
       } else { // addx
         const [_, addXStr] = val.split(' ')
-        const addX = +addXStr
-        return [[...acc, [cycle + 1, nextVal], [cycle + 2, nextVal]], nextVal + addX]
+        return [[...acc, [cycle + 1, nextVal], [cycle + 2, nextVal]], nextVal + +addXStr]
       }
-    },
-    [[[0, 1]], 1] // [[cycle, X], nextVal]
-  )
+    }, [[[0, 1]], 1]) // [[cycle, X], nextVal]
 
   const image = data
     .slice(1)
     .reduce((imgRows, [cycle, x]) => {
       const checkCRTSpriteMath = (crtPos, spritePos) => {
         const diff = crtPos - spritePos
-        const result = diff < 3 && diff >= 0 ? true : false
-        return result
+        return diff < 3 && diff >= 0 ? true : false
       }
       const getPixel = (crt, x) => checkCRTSpriteMath(crt, x) ? '#' : '.'
       if (cycle % 40 === 1) {
-        imgRow = ''
-        imgRow += getPixel(1, x)
+        imgRow = getPixel(1, x)
         return [...imgRows, imgRow]
       } else {
         imgRow = imgRows.slice(-1)[0]
-        let crt = cycle % 40
-        crt = crt === 0 ? 40 : crt
-        imgRow += getPixel(crt, x)
+        imgRow += getPixel(cycle % 40 === 0 ? 40 : cycle % 40, x)
         return [...imgRows.slice(0, -1), imgRow]
       }
     }, []) // [imgRows]
